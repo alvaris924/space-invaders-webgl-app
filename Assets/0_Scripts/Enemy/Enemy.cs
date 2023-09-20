@@ -1,8 +1,10 @@
+using com.ootii.Messages;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
 
@@ -15,10 +17,20 @@ public class Enemy : MonoBehaviour {
 
     public Vector3 MoveDirection = Vector3.left;
 
+    private void Awake() {
+        MessageDispatcher.AddListener(this, EventList.TouchScreenEdge, OnTouchScreenEdge);
+    }
+
+    private void Start() {
+        
+    }
+
+    void OnTouchScreenEdge(IMessage msg) {
+        MoveDown();
+    }
+
     void Update() {
-
         Move();
-
     }
 
     public void Move() {
@@ -32,23 +44,14 @@ public class Enemy : MonoBehaviour {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
 
         if (screenPos.x <= 0 || screenPos.x >= Screen.width) {
-            MoveDown();
+            MessageDispatcher.SendMessage(this, EventList.TouchScreenEdge, null, 0);
+            //MoveDown();
         }
 
         if (transform.position.y < -10f) {
             Destroy(gameObject);
         }
 
-    }
-
-    [Button]
-    public float GetLeftEdge() {
-
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-
-        //Vector3 v3Left = new Vector3(0, 0, 0); //10 is the distance from the camera
-        //v3Left = Camera.main.ScreenToWorldPoint(v3Left);
-        return screenPos.x;
     }
 
     public float MoveDownMultplier = 1;

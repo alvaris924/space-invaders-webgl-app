@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: space_ship_arcadia_special_forces
       objectReference: {fileID: 0}
+    - target: {fileID: 5800265885914142706, guid: b326c2f41890242429ebe097d0bac8d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5800265885914303442, guid: b326c2f41890242429ebe097d0bac8d4, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -364,10 +368,10 @@ MonoBehaviour:
   - {fileID: 8341829608727679876, guid: 680375b034e126943b12756cd6ceb575, type: 3}
   - {fileID: 2956439854550558683, guid: a26789a8172d8ba49883f27fbdc2e981, type: 3}
   - {fileID: 6155772854503208280, guid: a21a4c855926f74438b91f4825562c68, type: 3}
-  GridSize: {x: 8, y: 5}
-  spacing: 1.5
+  GridSize: {x: 8, y: 4}
+  spacing: 1.2
   startDelay: 2
-  SpawnOffset: {x: -3.8, y: -1.5}
+  SpawnOffset: {x: -3.8, y: 1}
   Enemies: []
   SpawnParent: {fileID: 694306141}
 --- !u!4 &658830038
@@ -410,7 +414,7 @@ Transform:
   m_GameObject: {fileID: 694306140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.2710114, y: -18.337162, z: 11.631535}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -483,6 +487,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: alien_01_mobile
       objectReference: {fileID: 0}
+    - target: {fileID: 6367743251753434666, guid: 75e84d681d116564595e4400bca5f31e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75e84d681d116564595e4400bca5f31e, type: 3}
 --- !u!1 &1687258581
@@ -521,8 +529,8 @@ Camera:
   m_GameObject: {fileID: 1687258581}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
