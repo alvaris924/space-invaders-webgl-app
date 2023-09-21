@@ -11,53 +11,76 @@ using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
 
+[RequireComponent(typeof(PoolEntity))]
 public class Enemy : MonoBehaviour {
 
+    [Title("Movement")]
     public bool CanMove = true;
-    public bool CanMoveDown = true;
 
     public bool CanShoot = true;
 
-    public float MoveSpeed = 1f;
-    public float MoveDownSpeed = 1f;
+    //[ReadOnly]
+    public float MoveSpeed = 2f;
 
+    [ReadOnly]
+    public float MoveSpeedMultiplier = 1f;
+
+    //[ReadOnly]
+    public float MoveDownSpeed = 2f;
+
+    [ReadOnly]
     public Vector3 MoveDirection = Vector3.left;
 
-    public Transform ShootPoint;
+    public float MoveDownMultplier = 1;
 
-    public GameObject ProjectilePrefab;
-
-    public float ProjectileSpeed = 1;
-
-    public int ScorePoint = 100;
-
-    public Vector2 EdgeOffset = Vector2.zero;
+    [Title("Attack")]
+    public float ProjectileSpeed = 3;
 
     public Vector2 AttackInterval = new Vector2(3, 10);
+
+    [Title("Score")]
+    public int ScorePoint = 100;
+
+    [Title("Physics")]
+    public float RaycastDistance = 10.0f;
 
     [SerializeField]
     [ReadOnly]
     private Vector2 screenPos;
 
+    [Title("Reference")]
+    public Transform ShootPoint;
+
+    public GameObject ProjectilePrefab;
+
     public PoolEntity PoolEntity;
 
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.TouchScreenEdge, OnTouchScreenEdge);
+        MessageDispatcher.AddListener(this, EventList.EnemyDestroyed, OnEnemyDestroyed);
     }
 
     private void Start() {
-        
+        MoveSpeedMultiplier += Mathf.Min(1, ((GameManager.Instance.CurrentLevel) * FieldManager.Instance.EnemyStartMoveSpeedMultiplier));
+    }
+
+
+    void Update() {
+        Move();
+    }
+
+    private void OnDestroy() {
+        StopAttack();
+        MessageDispatcher.RemoveAllListenersFromParent(this);
     }
 
     void OnTouchScreenEdge(IMessage msg) {
         MoveDown();
     }
 
-    void Update() {
-        Move();
+    void OnEnemyDestroyed(IMessage msg) {
+        MoveSpeedMultiplier += FieldManager.Instance.EnemyMoveSpeedMultiplier; 
     }
-
-    public float RaycastDistance = 1.0f;
 
     [Button]
     public bool HasFriendOnFront() {
@@ -74,50 +97,65 @@ public class Enemy : MonoBehaviour {
         return false;
     }
 
+    public int MoveDownCommandCount;
+
     public void Move() {
 
         if (!CanMove) {
             return;
         }
 
-        transform.Translate(MoveDirection * MoveSpeed * Time.deltaTime);
+        transform.Translate(MoveDirection * MoveSpeed * MoveSpeedMultiplier * Time.deltaTime);
 
         screenPos = Camera.main.WorldToScreenPoint(transform.position);
 
-        if (screenPos.x <= (0 + FieldManager.Instance.EdgeOffset.x) ||
-            screenPos.x >= (Screen.width + FieldManager.Instance.EdgeOffset.y)
+        if (screenPos.x <= (0 + FieldManager.Instance.EdgeOffset.x) && MoveDirection == Vector3.left ||
+            screenPos.x >= (Screen.width + FieldManager.Instance.EdgeOffset.y) && MoveDirection == Vector3.right
         ) {
             if(CanMove) {
                 MessageDispatcher.SendMessage(this, EventList.TouchScreenEdge, null, 0);
+                CanMove = false;
+                CanMoveDown = true;
+                // MoveDown();
             }
-        }
-
-        if (transform.position.y < -5.5f) {
-            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 0);
-            //Destroy(gameObject);
         }
 
     }
 
-    public float MoveDownMultplier = 1;
+    public bool CanMoveDown = true;
 
     [Button]
-    public void MoveDown(bool switchDir = false) {
+    public void MoveDown() {
 
-        CanMove = false;
+        Debug.Log("MoveDown");
 
-        Vector3 targetPosition = transform.position + (Vector3.down * MoveDownMultplier);
+        MoveDownCommandCount++;
 
-        transform.DOMove(targetPosition, 1.0f).OnComplete(() => {
+        if(MoveDownCommandCount > 1) {
+            return;
+        }
 
-            if(MoveDirection == Vector3.left) {
-                MoveDirection = Vector3.right;
-            } else {
-                MoveDirection = Vector3.left;
-            }
+        if (CanMoveDown) {
 
-            CanMove = true;
-        });
+            CanMoveDown = false;
+
+            Vector3 targetPosition = transform.position + (Vector3.down * MoveDownMultplier);
+
+            transform.DOMove(targetPosition, 1.0f).OnComplete(() => {
+
+                if (MoveDirection == Vector3.left) {
+                    MoveDirection = Vector3.right;
+                } else {
+                    MoveDirection = Vector3.left;
+                }
+
+                CanMove = true;
+
+                MoveDownCommandCount = 0;
+            });
+
+        }
+
 
     }
 

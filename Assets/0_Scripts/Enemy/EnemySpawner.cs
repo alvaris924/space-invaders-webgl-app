@@ -2,6 +2,7 @@ using com.ootii.Messages;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -18,21 +19,43 @@ public class EnemySpawner : Singleton<EnemySpawner> {
     public Vector2 SpawnOffset;
 
     [ReadOnly]
-    public List<GameObject> Enemies;
+    public List<Enemy> Enemies;
 
     public Transform SpawnParent;
 
+    public List<Enemy> GetAliveEnemies() {
+        return Enemies.Where(enemy => !enemy.PoolEntity.IsAvailable).ToList();
+    }
+    public List<Enemy> GetDeadEnemies() {
+        return Enemies.Where(enemy => enemy.PoolEntity.IsAvailable).ToList();
+    }
+
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
+        MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
+        MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
     }
 
     private void Start() {
         
     }
 
+    private void OnDestroy() {
+        MessageDispatcher.RemoveAllListenersFromParent(this);
+    }
+
     void OnGameStarted(IMessage msg) {
         // spawn enemy first
+        SpawnOffset.y = 1f - ((GameManager.Instance.CurrentLevel-1) * 1.5f);
         SpawnEnemies();
+    }
+
+    void OnPlayerDefeated(IMessage msg) {
+        DestroyAllEnemies();
+    }
+
+    void OnPlayerWon(IMessage msg) {
+        DestroyAllEnemies();
     }
 
     [Button]
@@ -46,9 +69,11 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
                 Vector3 spawnPosition = new Vector3((x + SpawnOffset.x) * spacing, (y + SpawnOffset.y) * spacing, 0);
 
-                GameObject enemy = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[0], spawnPosition, Quaternion.identity, SpawnParent);
+                GameObject enemyObject = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[Random.Range(0, EnemyPrefabs.Count)], spawnPosition, Quaternion.identity, SpawnParent);
 
-                enemy.GetComponent<Enemy>().Init();
+                Enemy enemy = enemyObject.GetComponent<Enemy>();
+
+                enemy.Init();
 
                 Enemies.Add(enemy);
             }
@@ -59,8 +84,8 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
     [Button]
     public void DestroyAllEnemies() {
-        foreach (GameObject enemy in Enemies) {
-            Destroy(enemy);
+        foreach (Enemy enemy in Enemies) {
+            Destroy(enemy.gameObject);
         }
 
         // Clear the list to remove references to destroyed enemies
