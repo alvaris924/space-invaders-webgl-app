@@ -3,14 +3,30 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using System.Linq;
 using UnityEngine;
+using com.ootii.Messages;
 
 public class PoolManager : Singleton<PoolManager> {
 
-    [SerializeField][ReadOnly]
-    private List<PoolHolder> pools = new List<PoolHolder>();
+    [ReadOnly]
+    public List<PoolHolder> pools = new List<PoolHolder>();
 
     private void Awake() {
-        
+        ClearPools();
+
+        MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
+        MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
+    }
+
+    private void OnDestroy() {
+        MessageDispatcher.RemoveAllListenersFromParent(this);
+    }
+
+    void OnPlayerWon(IMessage msg) {
+        ClearPools();
+    }
+
+    void OnPlayerDefeated(IMessage msg) {
+        ClearPools();
     }
 
     public GameObject SpawnGameObject(
@@ -27,13 +43,19 @@ public class PoolManager : Singleton<PoolManager> {
             pools.Add(poolHolder);
         }
 
-        GameObject resultGameObject = poolHolder.PooledGameObjects.Find(x => !x.activeInHierarchy);
+        GameObject resultGameObject = poolHolder.PooledGameObjects.Find(x => x.GetComponent<PoolEntity>().IsAvailable);
 
         if (resultGameObject == null) {
             resultGameObject = Instantiate(targetPrefab, targetPosition, targetRotation, targetParent);
             poolHolder.PooledGameObjects.Add(resultGameObject);
+            
+        } else {
+            resultGameObject.transform.position = targetPosition;
+            resultGameObject.transform.rotation = targetRotation;
+            resultGameObject.transform.parent = targetParent;
         }
 
+        resultGameObject.GetComponent<PoolEntity>().IsAvailable = false;
         resultGameObject.SetActive(true);
 
         return resultGameObject;
@@ -43,5 +65,8 @@ public class PoolManager : Singleton<PoolManager> {
         targetGameObject.SetActive(false);
     }
 
-
+    [Button]
+    public void ClearPools() {
+        pools.Clear();
+    }
 }
