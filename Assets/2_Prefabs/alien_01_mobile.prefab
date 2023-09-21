@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1667039311516441614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7379721122492028367}
+  m_Layer: 0
+  m_Name: ShootPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7379721122492028367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667039311516441614}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.113, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6367743251753001482}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &6367743251753434656
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +271,7 @@ GameObject:
   - component: {fileID: 6367743251753001482}
   - component: {fileID: 6367743251743483880}
   - component: {fileID: -4562885768522936783}
-  - component: {fileID: 859163574}
+  - component: {fileID: 6447446530601550607}
   m_Layer: 0
   m_Name: alien_01_mobile
   m_TagString: Untagged
@@ -262,6 +293,7 @@ Transform:
   m_Children:
   - {fileID: 6367743251753001480}
   - {fileID: 6367743251753001476}
+  - {fileID: 7379721122492028367}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -297,10 +329,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanMove: 1
-  MoveSpeed: 1
+  MoveSpeed: 3
+  MoveDownSpeed: 2
   MoveDirection: {x: -1, y: 0, z: 0}
---- !u!136 &859163574
-CapsuleCollider:
+  ShootPoint: {fileID: 7379721122492028367}
+  ProjectilePrefab: {fileID: 1318822892698608, guid: 3deb08015a982e94a95040c1783634dd, type: 3}
+  ProjectileSpeed: 1
+  MoveDownMultplier: 1
+--- !u!64 &6447446530601550607
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -309,10 +346,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 0.7
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: d21761a14d034664f92cf966690f885b, type: 3}
 --- !u!1 &6367743251753434668
 GameObject:
   m_ObjectHideFlags: 0

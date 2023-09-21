@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5800265885910911986}
   - component: {fileID: 5800265885911877938}
   m_Layer: 0
-  m_Name: space_ship_arcadia_special_forces
+  m_Name: SpaceShip_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

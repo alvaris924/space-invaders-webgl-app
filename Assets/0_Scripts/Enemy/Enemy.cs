@@ -17,6 +17,12 @@ public class Enemy : MonoBehaviour {
 
     public Vector3 MoveDirection = Vector3.left;
 
+    public Transform ShootPoint;
+
+    public GameObject ProjectilePrefab;
+
+    public float ProjectileSpeed = 1;
+
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.TouchScreenEdge, OnTouchScreenEdge);
     }
@@ -76,10 +82,32 @@ public class Enemy : MonoBehaviour {
 
     }
 
-    public void Attack() {
+    [Button]
+    public void Shoot() {
+
+        GameObject projectileObject = PoolManager.Instance.SpawnGameObject(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation);
+
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+
+        projectile.OwnerType = OwnerTypes.Enemy;
+
+        projectile.Rigidbody.AddForce(-ShootPoint.forward * ProjectileSpeed, ForceMode.Impulse);
 
     }
 
+    private void OnTriggerEnter(Collider other) {
 
+        Projectile projectile = other.GetComponent<Projectile>();
+
+        if (projectile != null) {
+            if(projectile.OwnerType == OwnerTypes.Player) {
+                gameObject.SetActive(false);
+            }
+        } else {
+            return;
+        }
+
+        
+    }
 
 }
