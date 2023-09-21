@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 6447446530601550607}
   m_Layer: 0
   m_Name: alien_01_mobile
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -334,7 +334,7 @@ MonoBehaviour:
   MoveDirection: {x: -1, y: 0, z: 0}
   ShootPoint: {fileID: 7379721122492028367}
   ProjectilePrefab: {fileID: 1318822892698608, guid: 3deb08015a982e94a95040c1783634dd, type: 3}
-  ProjectileSpeed: 1
+  ProjectileSpeed: 3
   MoveDownMultplier: 1
 --- !u!64 &6447446530601550607
 MeshCollider:

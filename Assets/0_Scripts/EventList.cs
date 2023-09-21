@@ -6,5 +6,10 @@ public class EventList {
 
     public const string TouchScreenEdge = "TouchScreenEdge";
 
+    public const string EnemyDestroyed = "EnemyDestroyed";
+
+    public const string PlayerDefeated = "PlayerDefeated";
+
+
 
 }
