@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// For earlier prototype, let's do it in gamejam-way, with goal to realize features first, then come back for code optimization
 /// </summary>
-public class EnemySpawner : MonoBehaviour {
+public class EnemySpawner : Singleton<EnemySpawner> {
 
     public List<GameObject> EnemyPrefabs;
 
@@ -23,11 +23,16 @@ public class EnemySpawner : MonoBehaviour {
     public Transform SpawnParent;
 
     private void Awake() {
-        
+        MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
     }
 
     private void Start() {
         
+    }
+
+    void OnGameStarted(IMessage msg) {
+        // spawn enemy first
+        SpawnEnemies();
     }
 
     [Button]
@@ -41,9 +46,11 @@ public class EnemySpawner : MonoBehaviour {
 
                 Vector3 spawnPosition = new Vector3((x + SpawnOffset.x) * spacing, (y + SpawnOffset.y) * spacing, 0);
 
-                Instantiate(EnemyPrefabs[0], spawnPosition, Quaternion.identity, SpawnParent);
+                GameObject enemy = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[0], spawnPosition, Quaternion.identity, SpawnParent);
 
-                Enemies.Add(EnemyPrefabs[0]);
+                enemy.GetComponent<Enemy>().Init();
+
+                Enemies.Add(enemy);
             }
 
         }
