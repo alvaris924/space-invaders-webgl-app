@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using System.Linq;
 using UnityEngine;
 
 public class PoolManager : Singleton<PoolManager> {
 
+    [SerializeField][ReadOnly]
     private List<PoolHolder> pools = new List<PoolHolder>();
 
     private void Awake() {
