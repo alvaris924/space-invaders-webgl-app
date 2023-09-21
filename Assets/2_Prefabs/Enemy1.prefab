@@ -272,8 +272,9 @@ GameObject:
   - component: {fileID: 6367743251743483880}
   - component: {fileID: -4562885768522936783}
   - component: {fileID: 6447446530601550607}
+  - component: {fileID: 2524894910242740281}
   m_Layer: 0
-  m_Name: alien_01_mobile
+  m_Name: Enemy1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,12 +330,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanMove: 1
-  MoveSpeed: 3
+  CanMoveDown: 1
+  CanShoot: 1
+  MoveSpeed: 2
+  MoveSpeedMultiplier: 1
   MoveDownSpeed: 2
   MoveDirection: {x: -1, y: 0, z: 0}
   ShootPoint: {fileID: 7379721122492028367}
   ProjectilePrefab: {fileID: 1318822892698608, guid: 3deb08015a982e94a95040c1783634dd, type: 3}
   ProjectileSpeed: 3
+  ScorePoint: 100
+  EdgeOffset: {x: 0, y: 0}
+  AttackInterval: {x: 3, y: 10}
+  screenPos: {x: 0, y: 0}
+  PoolEntity: {fileID: 2524894910242740281}
+  RaycastDistance: 10
   MoveDownMultplier: 1
 --- !u!64 &6447446530601550607
 MeshCollider:
@@ -350,6 +360,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: d21761a14d034664f92cf966690f885b, type: 3}
+--- !u!114 &2524894910242740281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6367743251753434666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 971a7886d5fec8048a54b2ab93948dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsAvailable: 1
 --- !u!1 &6367743251753434668
 GameObject:
   m_ObjectHideFlags: 0

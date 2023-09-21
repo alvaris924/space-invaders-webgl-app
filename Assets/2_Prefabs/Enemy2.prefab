@@ -263,8 +263,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2956439854550662139}
   - component: {fileID: 2956439854560575003}
+  - component: {fileID: 3053184596089975331}
+  - component: {fileID: 7274396923801979605}
+  - component: {fileID: 2656303033612572955}
   m_Layer: 0
-  m_Name: alien_03_mobile
+  m_Name: Enemy2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,13 +280,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2956439854550558683}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.5445278, y: 18.340767, z: -11.631535}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2956439854550662137}
   - {fileID: 2956439854550662129}
+  - {fileID: 340505164564851689}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -305,6 +309,61 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 1
+--- !u!114 &3053184596089975331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956439854550558683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 971a7886d5fec8048a54b2ab93948dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsAvailable: 1
+--- !u!114 &7274396923801979605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956439854550558683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85751dee875b474badd2347d2575370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanMove: 1
+  CanMoveDown: 1
+  CanShoot: 1
+  MoveSpeed: 2
+  MoveSpeedMultiplier: 1
+  MoveDownSpeed: 2
+  MoveDirection: {x: -1, y: 0, z: 0}
+  MoveDownMultplier: 1
+  ProjectileSpeed: 3
+  AttackInterval: {x: 3, y: 10}
+  ScorePoint: 150
+  RaycastDistance: 10
+  screenPos: {x: 0, y: 0}
+  ShootPoint: {fileID: 340505164564851689}
+  ProjectilePrefab: {fileID: 1318822892698608, guid: 3deb08015a982e94a95040c1783634dd, type: 3}
+  PoolEntity: {fileID: 3053184596089975331}
+--- !u!64 &2656303033612572955
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956439854550558683}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 07b1edbc1048844409bbc37310987a77, type: 3}
 --- !u!1 &2956439854550558685
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,3 +426,34 @@ Transform:
   m_Father: {fileID: 2956439854550662129}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8360741220460560992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 340505164564851689}
+  m_Layer: 0
+  m_Name: ShootPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &340505164564851689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8360741220460560992}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.129, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2956439854550662139}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 65613862963746174}
   - component: {fileID: 54772009393694130}
   - component: {fileID: 3571566773207794783}
+  - component: {fileID: 6414686155263208373}
   m_Layer: 0
   m_Name: Projectile_1
   m_TagString: Projectile
@@ -127,5 +128,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad80533d6a0b49547a73f90715cef496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OwnerType: 0
+  OwnerType: 2
   Rigidbody: {fileID: 54772009393694130}
+  PoolEntity: {fileID: 6414686155263208373}
+  screenPos: {x: 0, y: 0}
+--- !u!114 &6414686155263208373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318822892698608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 971a7886d5fec8048a54b2ab93948dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsAvailable: 1

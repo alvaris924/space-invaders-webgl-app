@@ -12,8 +12,12 @@ public class MainWindow : UIWindow
 
         MessageDispatcher.AddClickEvent(this, StartGameButton, () => {
             gameObject.SetActive(false);
-            GameManager.Instance.ExecuteGameLoop();
+            _ = GameManager.Instance.StartGame();
         });
 
+    }
+
+    private void OnDestroy() {
+        MessageDispatcher.RemoveAllListenersFromParent(this);
     }
 }

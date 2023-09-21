@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameWindow : UIWindow {
 
@@ -10,9 +11,16 @@ public class GameWindow : UIWindow {
 
     public List<GameObject> LifeSprites;
 
+    public Button PauseButton;
+
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.ScoreUpdated, OnScoreUpdated);
         MessageDispatcher.AddListener(this, EventList.PlayerStatUpdated, OnPlayerStatUpdated);
+
+        MessageDispatcher.AddClickEvent(this, PauseButton, () => {
+            GameManager.Instance.ToggleGamePause();
+        });
+
         ScoreText.text = "0";
     }
 
