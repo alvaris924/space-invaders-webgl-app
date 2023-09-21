@@ -13,6 +13,10 @@ public class ScoreManager : Singleton<ScoreManager> {
 
     }
 
+    private void OnDestroy() {
+        MessageDispatcher.RemoveAllListenersFromParent(this);
+    }
+
     void OnEnemyDestroyed(IMessage msg) {
 
         int scorePoint = int.Parse(msg.Data.ToString());

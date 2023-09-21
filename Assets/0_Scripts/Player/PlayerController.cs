@@ -1,10 +1,11 @@
+using com.ootii.Messages;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
+
     public float moveSpeed = 5f;
 
     public bool CanShoot;
@@ -25,27 +26,44 @@ public class PlayerController : MonoBehaviour
 
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
             Shoot();
         }
+
     }
 
     [Button]
     public void Shoot() {
 
+        if(!GameManager.Instance.GameStarted) {
+            return;
+        }
+
         GameObject projectileObject = PoolManager.Instance.SpawnGameObject(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation);
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
+
+        projectile.OwnerType = OwnerTypes.Player;
 
         projectile.Rigidbody.AddForce(ShootPoint.forward * ProjectileSpeed, ForceMode.Impulse);
 
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag != "Projectile") {
-            return;
+
+        Projectile projectile = other.GetComponent<Projectile>();
+
+        if (projectile != null) {
+            if (projectile.OwnerType == OwnerTypes.Enemy) {
+                MessageDispatcher.SendMessage(this, EventList.PlayerAttacked, null, 0);
+            }
+        } else {
+
         }
 
-        gameObject.SetActive(false);
+        if(other.tag == "Enemy") {
+            MessageDispatcher.SendMessage(this, EventList.PlayerAttacked, null, 0);
+        }
     }
+
 }

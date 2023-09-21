@@ -1,4 +1,5 @@
 public enum OwnerTypes {
     Player,
-    Enemy
+    Enemy, 
+    None
 }

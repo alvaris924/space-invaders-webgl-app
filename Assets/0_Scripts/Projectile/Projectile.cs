@@ -52,16 +52,15 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
 
-        _ = Reset();
-
-        /*
         if (other.tag == "Enemy" && OwnerType == OwnerTypes.Player) {
             _ = Reset();
         }
         else if (other.tag == "Player" && OwnerType == OwnerTypes.Enemy) {
             _ = Reset();
+        } else if (other.tag == "Projectile") {
+            _ = Reset();
         }
-        */
+
     }
 
 }
