@@ -2,5 +2,6 @@ public enum UIWindowTypes {
     Main,
     Game,
     Leaderboard,
-    Pause
+    Pause,
+    QuitGame
 }
