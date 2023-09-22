@@ -18,6 +18,7 @@ public class GameWindow : UIWindow {
         MessageDispatcher.AddListener(this, EventList.PlayerStatUpdated, OnPlayerStatUpdated);
 
         MessageDispatcher.AddClickEvent(this, PauseButton, () => {
+            WindowManager.Instance.SetActiveWindow(UIWindowTypes.Pause, true);
             GameManager.Instance.ToggleGamePause();
         });
 

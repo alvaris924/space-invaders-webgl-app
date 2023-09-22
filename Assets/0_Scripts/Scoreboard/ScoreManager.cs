@@ -1,16 +1,21 @@
 using com.ootii.Messages;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class ScoreManager : Singleton<ScoreManager> {
 
+    [ReadOnly]
     public int Score;
 
     private void Awake() {
 
         MessageDispatcher.AddListener(this, EventList.EnemyDestroyed, OnEnemyDestroyed);
 
+        MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
+        MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
+        MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
     }
 
     private void OnDestroy() {
@@ -24,6 +29,18 @@ public class ScoreManager : Singleton<ScoreManager> {
         Score += scorePoint;
 
         MessageDispatcher.SendMessage(this, EventList.ScoreUpdated, Score, 0);
+
+    }
+
+    void OnGameStarted(IMessage msg) {
+        Score = 0;
+    }
+
+    void OnPlayerWon(IMessage msg) {
+
+    }
+
+    void OnPlayerDefeated(IMessage msg) {
 
     }
 }

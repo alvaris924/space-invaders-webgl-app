@@ -6,10 +6,18 @@ using UnityEngine.UI;
 
 public class LeaderboardWindow : UIWindow {
 
+    public List<LeaderboardItem> LeaderboardItems = new List<LeaderboardItem>();
+
     public Button ReturnButton;
     public Button ContinueButton;
 
+    private void Awake() {
+        MessageDispatcher.AddListener(this, EventList.LeaderboardUpdated, OnLeaderboardUpdated);
+    }
+
     void Start() {
+
+        OnLeaderboardUpdated(null);
 
         MessageDispatcher.AddClickEvent(this, ReturnButton, () => {
             WindowManager.Instance.SetActiveAllWindows(false);
@@ -23,7 +31,27 @@ public class LeaderboardWindow : UIWindow {
         });
     }
 
+    private void OnEnable() {
+        OnLeaderboardUpdated(null);
+    }
+
+    void OnLeaderboardUpdated(IMessage msg) {
+
+        for (int i = 0; i < LeaderboardItems.Count; i++) {
+            if (LeaderboardManager.Instance.MainLeaderboard.LeaderboardDatas.Count > i) {
+                LeaderboardItems[i].PlayerNameText.text = LeaderboardManager.Instance.MainLeaderboard.LeaderboardDatas[i].Name;
+                LeaderboardItems[i].PlayerScoreText.text = LeaderboardManager.Instance.MainLeaderboard.LeaderboardDatas[i].Score.ToString();
+            }
+            else {
+                LeaderboardItems[i].Reset();
+            }
+        }
+
+    }
+
     private void OnDestroy() {
         MessageDispatcher.RemoveAllListenersFromParent(this);
     }
+
+
 }

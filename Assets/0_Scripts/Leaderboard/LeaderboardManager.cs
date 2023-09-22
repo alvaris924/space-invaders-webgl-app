@@ -1,38 +1,48 @@
+using com.ootii.Messages;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaderboardManager : MonoBehaviour {
+public class LeaderboardManager : Singleton<LeaderboardManager> {
 
-    public List<LeaderboardData> LeaderboardDatas = new List<LeaderboardData>();
+    public Leaderboard MainLeaderboard;
 
     private void Awake() {
         LoadLeaderboard();
+        MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
+        MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
     }
 
-    public void AddEntry(string playerName, int score) {
+    void OnPlayerWon(IMessage msg) {
+        MainLeaderboard.AddEntry(UserManager.Instance.Username, ScoreManager.Instance.Score);
+        MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);
+    }
 
-        LeaderboardData leaderboardData = new LeaderboardData {
-            Name = playerName,
-            Score = score
-        };
-
-        LeaderboardDatas.Add(leaderboardData);
-        LeaderboardDatas.Sort((a, b) => b.Score.CompareTo(a.Score));
-        SaveLeaderboard();
+    void OnPlayerDefeated(IMessage msg) {
+        MainLeaderboard.AddEntry(UserManager.Instance.Username, ScoreManager.Instance.Score);
+        MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);
     }
 
     public void SaveLeaderboard() {
-        string leaderboardData = JsonUtility.ToJson(this);
+        string leaderboardData = JsonUtility.ToJson(MainLeaderboard);
         PlayerPrefs.SetString("LeaderboardData", leaderboardData);
         PlayerPrefs.Save();
     }
 
     public void LoadLeaderboard() {
         if (PlayerPrefs.HasKey("LeaderboardData")) {
+
             string leaderboardData = PlayerPrefs.GetString("LeaderboardData");
-            LeaderboardManager loadedLeaderboard = JsonUtility.FromJson<LeaderboardManager>(leaderboardData);
-            LeaderboardDatas = loadedLeaderboard.LeaderboardDatas;
+            Debug.Log(leaderboardData);
+
+            Leaderboard loadedLeaderboard = JsonUtility.FromJson<Leaderboard>(leaderboardData);
+
+            Debug.Log(loadedLeaderboard.LeaderboardDatas.Count);
+
+            MainLeaderboard = loadedLeaderboard;
+
+            MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);
+
         }
     }
 }
