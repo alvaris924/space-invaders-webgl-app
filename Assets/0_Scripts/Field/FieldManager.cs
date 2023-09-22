@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class FieldManager : Singleton<FieldManager> {
 
+    public Player Player;
+
     public Vector2 EdgeOffset = Vector2.zero;
 
     public float EnemyStartMoveSpeedMultiplier = 0.1f;
@@ -13,10 +15,13 @@ public class FieldManager : Singleton<FieldManager> {
 
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
+        Player.gameObject.SetActive(false);
     }
 
     void OnGameStarted(IMessage msg) {
         //CurrentEnemyMoveSpeed = 0;
+        Player.gameObject.SetActive(true);
+        Player.PlayerController.Reset();
     }
 
     private void OnDestroy() {
