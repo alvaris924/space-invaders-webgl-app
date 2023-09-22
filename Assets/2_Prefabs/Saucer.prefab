@@ -103,10 +103,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8341829608727580580}
   - component: {fileID: 8341829608737622598}
-  - component: {fileID: 8451802283657834443}
   - component: {fileID: 356770977564005706}
   - component: {fileID: 1325102991853821273}
   - component: {fileID: 25571401438714174}
+  - component: {fileID: 2717566395240756936}
   m_Layer: 0
   m_Name: Saucer
   m_TagString: Enemy
@@ -130,7 +130,7 @@ Transform:
   - {fileID: 8341829608727580588}
   - {fileID: 7675194854998479714}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!111 &8341829608737622598
 Animation:
@@ -150,34 +150,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 1
---- !u!114 &8451802283657834443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8341829608727679876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e85751dee875b474badd2347d2575370, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CanMove: 1
-  CanMoveDown: 1
-  CanShoot: 0
-  MoveSpeed: 1
-  MoveSpeedMultiplier: 1
-  MoveDownSpeed: 1
-  MoveDirection: {x: -1, y: 0, z: 0}
-  ProjectileSpeed: 3
-  AttackInterval: {x: 3, y: 10}
-  ScorePoint: 300
-  screenPos: {x: 0, y: 0}
-  ShootPoint: {fileID: 7675194854998479714}
-  ProjectilePrefab: {fileID: 1318822892698608, guid: 3deb08015a982e94a95040c1783634dd, type: 3}
-  PoolEntity: {fileID: 25571401438714174}
-  RaycastDistance: 1
-  MoveDownMultplier: 1
 --- !u!114 &356770977564005706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,9 +171,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8341829608727679876}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 88fad9fc54840834cb89a7fcb3860801, type: 3}
@@ -218,6 +198,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsAvailable: 1
+--- !u!114 &2717566395240756936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8341829608727679876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16137f24e88cad74cae78d76d2ea1fb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScorePoint: 500
+  MoveSpeed: 3
+  canMove: 0
+  MoveCountdown: 5
+  Renderer: {fileID: 8341829608741281414}
 --- !u!1 &8341829608727679878
 GameObject:
   m_ObjectHideFlags: 0
