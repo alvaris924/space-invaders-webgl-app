@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour {
 
     public float ProjectileSpeed;
 
+    public AudioSource AudioSource;
+
     void Update() {
 
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -47,6 +49,8 @@ public class PlayerController : MonoBehaviour {
 
         projectile.Rigidbody.AddForce(ShootPoint.forward * ProjectileSpeed, ForceMode.Impulse);
 
+        AudioSource.clip = AudioManager.Instance.ShootClip;
+        AudioSource.Play();
     }
 
     private void OnTriggerEnter(Collider other) {

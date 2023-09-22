@@ -7,8 +7,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
 
 [RequireComponent(typeof(PoolEntity))]
@@ -33,6 +31,10 @@ public class Enemy : MonoBehaviour {
 
     public float MoveDownMultplier = 1;
 
+    [InfoBox("Needs to be false initially for enemy to move")]
+    public bool CanMoveDown = true;
+
+
     [Title("Attack")]
     public float ProjectileSpeed = 3;
 
@@ -55,9 +57,15 @@ public class Enemy : MonoBehaviour {
 
     public PoolEntity PoolEntity;
 
+    [Title("Audio")]
+    public AudioSource AudioSource;
+
+    private Tween LerpPositionSequence;
+
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.TouchScreenEdge, OnTouchScreenEdge);
         MessageDispatcher.AddListener(this, EventList.EnemyDestroyed, OnEnemyDestroyed);
+
     }
 
     private void Start() {
@@ -65,12 +73,13 @@ public class Enemy : MonoBehaviour {
     }
 
 
-    void Update() {
+    void FixedUpdate() {
         Move();
     }
 
     private void OnDestroy() {
         StopAttack();
+        StopAllCoroutines();
         MessageDispatcher.RemoveAllListenersFromParent(this);
     }
 
@@ -97,43 +106,43 @@ public class Enemy : MonoBehaviour {
         return false;
     }
 
-    public int MoveDownCommandCount;
-
     public void Move() {
 
-        if (!CanMove) {
+        screenPos = Camera.main.WorldToScreenPoint(transform.position);
+
+        if (!CanMove || CanMoveDown) {
             return;
         }
 
         transform.Translate(MoveDirection * MoveSpeed * MoveSpeedMultiplier * Time.deltaTime);
 
-        screenPos = Camera.main.WorldToScreenPoint(transform.position);
-
-        if (screenPos.x <= (0 + FieldManager.Instance.EdgeOffset.x) && MoveDirection == Vector3.left ||
-            screenPos.x >= (Screen.width + FieldManager.Instance.EdgeOffset.y) && MoveDirection == Vector3.right
+        if ((screenPos.x <= (0 + FieldManager.Instance.EdgeOffset.x) && MoveDirection == Vector3.left) ||
+            (screenPos.x >= (Screen.width + FieldManager.Instance.EdgeOffset.y) && MoveDirection == Vector3.right)
         ) {
             if(CanMove) {
-                MessageDispatcher.SendMessage(this, EventList.TouchScreenEdge, null, 0);
-                CanMove = false;
-                CanMoveDown = true;
-                // MoveDown();
+                Debug.Log("True, MoveDirection: " + MoveDirection);
+                if(!CanMoveDown) {
+                    MessageDispatcher.SendMessage(this, EventList.TouchScreenEdge, null, 0);
+                }
             }
         }
 
     }
 
-    public bool CanMoveDown = true;
-
     [Button]
     public void MoveDown() {
+        StopCoroutine("IE_MoveDown");
+        StartCoroutine("IE_MoveDown");
+    }
 
-        Debug.Log("MoveDown");
+    private IEnumerator IE_MoveDown() {
 
-        MoveDownCommandCount++;
+        CanMove = false;
+        CanMoveDown = true;
 
-        if(MoveDownCommandCount > 1) {
-            return;
-        }
+        yield return new WaitForSeconds(0f);
+
+        // Debug.Log("MoveDown");
 
         if (CanMoveDown) {
 
@@ -141,7 +150,10 @@ public class Enemy : MonoBehaviour {
 
             Vector3 targetPosition = transform.position + (Vector3.down * MoveDownMultplier);
 
-            transform.DOMove(targetPosition, 1.0f).OnComplete(() => {
+            LerpPositionSequence.Kill(false);
+
+            // stop this too
+            LerpPositionSequence = transform.DOMove(targetPosition, 1.0f).OnComplete(() => {
 
                 if (MoveDirection == Vector3.left) {
                     MoveDirection = Vector3.right;
@@ -151,7 +163,6 @@ public class Enemy : MonoBehaviour {
 
                 CanMove = true;
 
-                MoveDownCommandCount = 0;
             });
 
         }
@@ -205,6 +216,8 @@ public class Enemy : MonoBehaviour {
 
         projectile.Rigidbody.AddForce(-ShootPoint.forward * ProjectileSpeed, ForceMode.Impulse);
 
+        //AudioSource.clip = AudioManager.Instance.ShootClip;
+        //AudioSource.Play();
     }
 
     public void Init() {
@@ -216,6 +229,7 @@ public class Enemy : MonoBehaviour {
     public void Reset() {
         gameObject.SetActive(false);
         CanMove = false;
+        CanMoveDown = false;
         StopAttack();
     }
 
@@ -225,6 +239,9 @@ public class Enemy : MonoBehaviour {
 
         if (projectile != null) {
             if(projectile.OwnerType == OwnerTypes.Player) {
+                GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation);
+                //AudioSource.clip = AudioManager.Instance.ExplosionClip;
+                //AudioSource.Play();
                 Reset();
                 MessageDispatcher.SendMessage(this, EventList.EnemyDestroyed, ScorePoint, 0);
             }
