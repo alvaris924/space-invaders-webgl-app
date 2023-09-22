@@ -22,6 +22,7 @@ public class Saucer : MonoBehaviour
         Reset();
 
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
+        MessageDispatcher.AddListener(this, EventList.GameEnded, OnGameEnded);
         MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
     }
@@ -43,6 +44,9 @@ public class Saucer : MonoBehaviour
     }
 
     void OnGameStarted(IMessage msg) {
+        Reset();
+    }
+    void OnGameEnded(IMessage msg) {
         Reset();
     }
     void OnPlayerWon(IMessage msg) {
@@ -96,7 +100,7 @@ public class Saucer : MonoBehaviour
             if (projectile.OwnerType == OwnerTypes.Player) {
                 GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation);
                 Reset();
-                MessageDispatcher.SendMessage(this, EventList.EnemyDestroyed, ScorePoint, 0);
+                MessageDispatcher.SendMessage(this, EventList.SaucerDestroyed, ScorePoint, 0);
             }
         } else {
 

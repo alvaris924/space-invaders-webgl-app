@@ -15,6 +15,7 @@ public class FieldManager : Singleton<FieldManager> {
 
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
+        MessageDispatcher.AddListener(this, EventList.GameEnded, OnGameEnded);
         Player.gameObject.SetActive(false);
     }
 
@@ -22,6 +23,11 @@ public class FieldManager : Singleton<FieldManager> {
         //CurrentEnemyMoveSpeed = 0;
         Player.gameObject.SetActive(true);
         Player.PlayerController.Reset();
+    }
+
+    void OnGameEnded(IMessage msg) {
+        //CurrentEnemyMoveSpeed = 0;
+        Player.gameObject.SetActive(false);
     }
 
     private void OnDestroy() {

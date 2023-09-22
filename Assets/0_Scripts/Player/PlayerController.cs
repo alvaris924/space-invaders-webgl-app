@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour {
 
     public bool CanShoot;
 
+    public float ShootCooldown = 0.5f;
+
     public GameObject ProjectilePrefab;
 
     public Transform ShootPoint;
@@ -33,6 +35,14 @@ public class PlayerController : MonoBehaviour {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
 
         rendererWidth = Renderer.bounds.size.x / 2;
+
+        /*
+        MessageDispatcher.AddSecondTimer(this, () => {
+            if (!CanShoot) {
+                CanShoot = true;
+            }
+        });
+        */
     }
 
     void Update() {
@@ -57,6 +67,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 newPosition = transform.position;
         newPosition.x = 0f;
         transform.position = newPosition;
+        CanShoot = true;
     }
 
     public void LimitEdgeMovement() {
@@ -72,6 +83,11 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
+        if (!CanShoot) {
+            return;
+        }
+        CanShoot = false;
+
         GameObject projectileObject = PoolManager.Instance.SpawnGameObject(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation);
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
@@ -82,6 +98,10 @@ public class PlayerController : MonoBehaviour {
 
         AudioSource.clip = AudioManager.Instance.ShootClip;
         AudioSource.Play();
+
+        CustomUtility.WaitBeforeAction(this, () => {
+            CanShoot = true;
+        }, ShootCooldown);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -101,7 +121,7 @@ public class PlayerController : MonoBehaviour {
             // based on this video (https://www.youtube.com/watch?v=kR2fjwr-TzA), player will be directly defeated
             GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation);
             MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
-            MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 1);
+            MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
         }
 
     }

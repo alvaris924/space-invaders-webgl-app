@@ -344,7 +344,7 @@ MonoBehaviour:
   MoveDownMultplier: 1
   CanMoveDown: 0
   ProjectileSpeed: 3
-  AttackInterval: {x: 3, y: 8}
+  AttackInterval: {x: 2, y: 7}
   ScorePoint: 150
   RaycastDistance: 10
   screenPos: {x: 0, y: 0}

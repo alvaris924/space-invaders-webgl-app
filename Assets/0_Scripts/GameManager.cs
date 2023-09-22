@@ -8,8 +8,6 @@ using Sirenix.OdinInspector;
 
 public class GameManager : Singleton<GameManager> {
 
-    public string PlayerName;
-
     [ReadOnly]
     public bool GameStarted;
 
@@ -27,7 +25,7 @@ public class GameManager : Singleton<GameManager> {
 
     private void Awake() {
         Application.targetFrameRate = 60;
-
+        
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
         MessageDispatcher.AddListener(this, EventList.PlayerAttacked, OnPlayerAttacked);
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
@@ -50,8 +48,8 @@ public class GameManager : Singleton<GameManager> {
     void OnEnemyDestroyed(IMessage msg) {
         KillCount++;
         if(KillCount == EnemySpawner.Instance.Enemies.Count) {
-            MessageDispatcher.SendMessage(this, EventList.PlayerWon, null, 0);
-            MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 0);
+            MessageDispatcher.SendMessage(this, EventList.PlayerWon, null, 1);
+            MessageDispatcher.SendMessage(this, EventList.GameEnded, "Win", 0);
         }
     }
 
@@ -65,8 +63,8 @@ public class GameManager : Singleton<GameManager> {
         CurrentPlayerLife--;
         MessageDispatcher.SendMessage(this, EventList.PlayerStatUpdated, null, 0);
         if(CurrentPlayerLife <= 0) {
-            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 0);
-            MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 0);
+            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
+            MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
         }
     }
 
@@ -103,8 +101,10 @@ public class GameManager : Singleton<GameManager> {
     [Button]
     public void WinGame() {
         MessageDispatcher.SendMessage(this, EventList.PlayerWon, null, 0);
-        MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 0);
+        MessageDispatcher.SendMessage(this, EventList.GameEnded, "Win", 0);
     }
+
+
 
     [Button]
     public void DeleteSaveData() {

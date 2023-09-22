@@ -13,9 +13,12 @@ public class GameWindow : UIWindow {
 
     public Button PauseButton;
 
+    public TextMeshProUGUI StatusText;
+
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.ScoreUpdated, OnScoreUpdated);
         MessageDispatcher.AddListener(this, EventList.PlayerStatUpdated, OnPlayerStatUpdated);
+        MessageDispatcher.AddListener(this, EventList.GameEnded, OnGameEnded);
 
         MessageDispatcher.AddClickEvent(this, PauseButton, () => {
             WindowManager.Instance.SetActiveWindow(UIWindowTypes.Pause, true);
@@ -23,10 +26,21 @@ public class GameWindow : UIWindow {
         });
 
         ScoreText.text = "0";
+        StatusText.text = "";
     }
 
     private void OnDestroy() {
         MessageDispatcher.RemoveAllListenersFromParent(this);
+    }
+
+    void OnGameEnded(IMessage msg) {
+        string status = msg.Data.ToString();
+        if(status == "Win") {
+            StatusText.text = "YOU WIN!";
+        } else {
+            StatusText.text = "YOU LOSE...";
+        }
+        ScoreText.text = ScoreManager.Instance.Score.ToString();
     }
 
     void OnScoreUpdated(IMessage msg) {

@@ -12,7 +12,7 @@ public class ScoreManager : Singleton<ScoreManager> {
     private void Awake() {
 
         MessageDispatcher.AddListener(this, EventList.EnemyDestroyed, OnEnemyDestroyed);
-
+        MessageDispatcher.AddListener(this, EventList.SaucerDestroyed, OnSaucerDestroyed);
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
         MessageDispatcher.AddListener(this, EventList.GameEnded, OnGameEnded);
         MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
@@ -26,9 +26,15 @@ public class ScoreManager : Singleton<ScoreManager> {
     void OnEnemyDestroyed(IMessage msg) {
 
         int scorePoint = int.Parse(msg.Data.ToString());
-
         Score += scorePoint;
+        MessageDispatcher.SendMessage(this, EventList.ScoreUpdated, Score, 0);
 
+    }
+
+    void OnSaucerDestroyed(IMessage msg) {
+
+        int scorePoint = int.Parse(msg.Data.ToString());
+        Score += scorePoint;
         MessageDispatcher.SendMessage(this, EventList.ScoreUpdated, Score, 0);
 
     }

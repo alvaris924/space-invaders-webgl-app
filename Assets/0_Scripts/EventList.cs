@@ -13,6 +13,8 @@ public class EventList {
 
     public const string EnemyDestroyed = "EnemyDestroyed";
 
+    public const string SaucerDestroyed = "SaucerDestroyed";
+
     public const string PlayerAttacked = "PlayerAttacked";
 
     public const string PlayerWon = "PlayerWon";
@@ -26,4 +28,6 @@ public class EventList {
     public const string EnemySpeedUpdated = "EnemySpeedUpdated";
 
     public const string LeaderboardUpdated = "LeaderboardUpdated";
+
+    public const string UserStatUpdated = "UserStatUpdated";
 }
