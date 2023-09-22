@@ -14,6 +14,7 @@ public class ScoreManager : Singleton<ScoreManager> {
         MessageDispatcher.AddListener(this, EventList.EnemyDestroyed, OnEnemyDestroyed);
 
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
+        MessageDispatcher.AddListener(this, EventList.GameEnded, OnGameEnded);
         MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
     }
@@ -33,7 +34,13 @@ public class ScoreManager : Singleton<ScoreManager> {
     }
 
     void OnGameStarted(IMessage msg) {
-        Score = 0;
+        if(GameManager.Instance.SessionResultType == GameSessionResultTypes.Lose) {
+            Score = 0;
+        }
+    }
+
+    void OnGameEnded(IMessage msg) {
+        
     }
 
     void OnPlayerWon(IMessage msg) {
@@ -41,6 +48,6 @@ public class ScoreManager : Singleton<ScoreManager> {
     }
 
     void OnPlayerDefeated(IMessage msg) {
-
+        
     }
 }

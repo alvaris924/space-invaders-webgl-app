@@ -1,10 +1,13 @@
 using com.ootii.Messages;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LeaderboardWindow : UIWindow {
+
+    public TextMeshProUGUI CurrentScoreText;
 
     public List<LeaderboardItem> LeaderboardItems = new List<LeaderboardItem>();
 
@@ -36,6 +39,8 @@ public class LeaderboardWindow : UIWindow {
     }
 
     void OnLeaderboardUpdated(IMessage msg) {
+
+        CurrentScoreText.text = $"Current Score: {ScoreManager.Instance.Score}";
 
         for (int i = 0; i < LeaderboardItems.Count; i++) {
             if (LeaderboardManager.Instance.MainLeaderboard.LeaderboardDatas.Count > i) {

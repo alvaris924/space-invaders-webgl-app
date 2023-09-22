@@ -22,6 +22,9 @@ public class GameManager : Singleton<GameManager> {
 
     public int CurrentLevel;
 
+    [ReadOnly]
+    public GameSessionResultTypes SessionResultType;
+
     private void Awake() {
         Application.targetFrameRate = 60;
 
@@ -41,13 +44,14 @@ public class GameManager : Singleton<GameManager> {
     }
 
     void OnPlayerWon(IMessage msg) {
-        
+        SessionResultType = GameSessionResultTypes.Win;
     }
 
     void OnEnemyDestroyed(IMessage msg) {
         KillCount++;
         if(KillCount == EnemySpawner.Instance.Enemies.Count) {
             MessageDispatcher.SendMessage(this, EventList.PlayerWon, null, 0);
+            MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 0);
         }
     }
 
@@ -62,12 +66,14 @@ public class GameManager : Singleton<GameManager> {
         MessageDispatcher.SendMessage(this, EventList.PlayerStatUpdated, null, 0);
         if(CurrentPlayerLife <= 0) {
             MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 0);
+            MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 0);
         }
     }
 
     void OnPlayerDefeated(IMessage msg) {
         GameStarted = false;
         CurrentLevel = 0;
+        SessionResultType = GameSessionResultTypes.Lose;
     }
 
     [Button]
@@ -97,6 +103,7 @@ public class GameManager : Singleton<GameManager> {
     [Button]
     public void WinGame() {
         MessageDispatcher.SendMessage(this, EventList.PlayerWon, null, 0);
+        MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 0);
     }
 
     [Button]

@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using System.Threading;
-using com.ootii.Messages;
-using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -33,34 +28,35 @@ public class Projectile : MonoBehaviour
 
         if (screenPos.y >= (Screen.height) || screenPos.y <= 0) {
             if(!PoolEntity.IsAvailable) {
-                _ = Reset();
+                Reset();
             }
         }
 
     }
 
-    public async UniTaskVoid Reset() {
+    public void Reset() {
+
         Rigidbody.velocity = Vector2.zero;
         Rigidbody.angularVelocity = Vector3.zero;
         PoolEntity.IsAvailable = true;
-        gameObject.SetActive(false);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
-        OwnerType = OwnerTypes.None;
-
+        CustomUtility.WaitBeforeAction(this, () => {
+            OwnerType = OwnerTypes.None;
+            gameObject.SetActive(false);
+        }, 0.01f);
+        
     }
 
     private void OnTriggerEnter(Collider other) {
 
         if (other.tag == "Enemy" && OwnerType == OwnerTypes.Player) {
-            _ = Reset();
-        }
-        else if (other.tag == "Player" && OwnerType == OwnerTypes.Enemy) {
-            _ = Reset();
+            Reset();
+        } else if (other.tag == "Player" && OwnerType == OwnerTypes.Enemy) {
+            Debug.Log("touched1");
+            Reset();
         } else if (other.tag == "Projectile") {
-            _ = Reset();
+            Reset();
         }
-
     }
 
 }

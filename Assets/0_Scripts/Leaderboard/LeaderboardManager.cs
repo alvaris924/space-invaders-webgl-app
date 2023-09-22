@@ -15,12 +15,12 @@ public class LeaderboardManager : Singleton<LeaderboardManager> {
 
     void OnPlayerWon(IMessage msg) {
         MainLeaderboard.AddEntry(UserManager.Instance.Username, ScoreManager.Instance.Score);
-        MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);
+        //MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);
     }
 
     void OnPlayerDefeated(IMessage msg) {
         MainLeaderboard.AddEntry(UserManager.Instance.Username, ScoreManager.Instance.Score);
-        MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);
+        //MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);
     }
 
     public void SaveLeaderboard() {
@@ -33,11 +33,12 @@ public class LeaderboardManager : Singleton<LeaderboardManager> {
         if (PlayerPrefs.HasKey("LeaderboardData")) {
 
             string leaderboardData = PlayerPrefs.GetString("LeaderboardData");
-            Debug.Log(leaderboardData);
+            
+            //Debug.Log(leaderboardData);
 
             Leaderboard loadedLeaderboard = JsonUtility.FromJson<Leaderboard>(leaderboardData);
 
-            Debug.Log(loadedLeaderboard.LeaderboardDatas.Count);
+            //Debug.Log(loadedLeaderboard.LeaderboardDatas.Count);
 
             MainLeaderboard = loadedLeaderboard;
 

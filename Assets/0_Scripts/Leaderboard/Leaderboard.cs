@@ -15,8 +15,6 @@ public class Leaderboard {
 
     public void AddEntry(string playerName, int score) {
 
-        Debug.Log("AddEntry");
-
         LeaderboardData leaderboardData = new LeaderboardData {
             Name = playerName,
             Score = score

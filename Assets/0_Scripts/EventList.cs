@@ -7,6 +7,8 @@ public class EventList {
 
     public const string GameStarted = "GameStarted";
 
+    public const string GameEnded = "GameEnded";
+
     public const string TouchScreenEdge = "TouchScreenEdge";
 
     public const string EnemyDestroyed = "EnemyDestroyed";
