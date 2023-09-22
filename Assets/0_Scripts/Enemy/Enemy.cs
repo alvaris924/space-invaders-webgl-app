@@ -120,7 +120,6 @@ public class Enemy : MonoBehaviour {
             (screenPos.x >= (Screen.width + FieldManager.Instance.EdgeOffset.y) && MoveDirection == Vector3.right)
         ) {
             if(CanMove) {
-                Debug.Log("True, MoveDirection: " + MoveDirection);
                 if(!CanMoveDown) {
                     MessageDispatcher.SendMessage(this, EventList.TouchScreenEdge, null, 0);
                 }
@@ -131,8 +130,10 @@ public class Enemy : MonoBehaviour {
 
     [Button]
     public void MoveDown() {
-        StopCoroutine("IE_MoveDown");
-        StartCoroutine("IE_MoveDown");
+        if(gameObject.activeSelf && gameObject.activeInHierarchy) {
+            StopCoroutine("IE_MoveDown");
+            StartCoroutine("IE_MoveDown");
+        }
     }
 
     private IEnumerator IE_MoveDown() {
@@ -149,6 +150,8 @@ public class Enemy : MonoBehaviour {
             CanMoveDown = false;
 
             Vector3 targetPosition = transform.position + (Vector3.down * MoveDownMultplier);
+
+            // Debug.Log("TargetPostion: " + (targetPosition.y - transform.position.y));
 
             LerpPositionSequence.Kill(false);
 
@@ -249,10 +252,7 @@ public class Enemy : MonoBehaviour {
 
         }
 
-        if(other.tag == "Player") {
-            // based on this video (https://www.youtube.com/watch?v=kR2fjwr-TzA), player will be directly defeated
-            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, ScorePoint, 0);
-        }
+
     }
 
 }

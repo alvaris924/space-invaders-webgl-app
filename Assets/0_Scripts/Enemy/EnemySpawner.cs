@@ -18,6 +18,8 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
     public Vector2 SpawnOffset;
 
+    private Vector2 StartingSpawnOffset;
+
     [ReadOnly]
     public List<Enemy> Enemies;
 
@@ -34,6 +36,8 @@ public class EnemySpawner : Singleton<EnemySpawner> {
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
         MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
+
+        StartingSpawnOffset = SpawnOffset;
     }
 
     private void Start() {
@@ -46,7 +50,11 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
     void OnGameStarted(IMessage msg) {
         // spawn enemy first
-        SpawnOffset.y = 1f - ((GameManager.Instance.CurrentLevel-1) * 1.5f);
+        
+        SpawnOffset.y = Mathf.Max(StartingSpawnOffset.y - ((GameManager.Instance.CurrentLevel-1) * 1f), -2f);
+
+        Debug.Log(SpawnOffset.y);
+
         SpawnEnemies();
     }
 
@@ -59,7 +67,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
     }
 
     public void Reset() {
-        SpawnOffset.y = 1f;
+        SpawnOffset.y = StartingSpawnOffset.y;
     }
 
     [Button]
@@ -67,19 +75,27 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
         DestroyAllEnemies();
 
+        int gameLevelIndex = Mathf.Min(GameManager.Instance.CurrentLevel-1, GameLevelManager.Instance.Levels.Count-1);
+        if(gameLevelIndex < 0) {
+            gameLevelIndex = 0;
+        }
+
         for (int x = 0; x < GridSize.x; x++) {
 
             for (int y = 0; y < GridSize.y; y++) {
 
+                int enemyPrefabIndex = GameLevelManager.Instance.Levels[gameLevelIndex].EnemyIndexByRows[y];
+
                 Vector3 spawnPosition = new Vector3((x + SpawnOffset.x) * spacing, (y + SpawnOffset.y) * spacing, 0);
 
-                GameObject enemyObject = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[Random.Range(0, EnemyPrefabs.Count)], spawnPosition, Quaternion.identity, SpawnParent);
+                GameObject enemyObject = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[enemyPrefabIndex], spawnPosition, Quaternion.identity, SpawnParent);
 
                 Enemy enemy = enemyObject.GetComponent<Enemy>();
 
                 enemy.Init();
 
                 Enemies.Add(enemy);
+
             }
 
         }
