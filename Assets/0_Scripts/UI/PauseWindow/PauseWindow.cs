@@ -13,7 +13,8 @@ public class PauseWindow : UIWindow {
 
         MessageDispatcher.AddClickEvent(this, SurrenderButton, () => {
             WindowManager.Instance.SetActiveWindow(UIWindowTypes.Pause, false);
-            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 0);
+            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
+            MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
             GameManager.Instance.ToggleGamePause();
         });
         MessageDispatcher.AddClickEvent(this, ContinueButton, () => {

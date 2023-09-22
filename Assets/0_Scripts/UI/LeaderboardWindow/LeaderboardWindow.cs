@@ -16,6 +16,8 @@ public class LeaderboardWindow : UIWindow {
 
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.LeaderboardUpdated, OnLeaderboardUpdated);
+
+        ContinueButton.gameObject.SetActive(false);
     }
 
     void Start() {
@@ -25,6 +27,10 @@ public class LeaderboardWindow : UIWindow {
         MessageDispatcher.AddClickEvent(this, ReturnButton, () => {
             WindowManager.Instance.SetActiveAllWindows(false);
             WindowManager.Instance.SetActiveWindow(UIWindowTypes.Main, true);
+            if(GameManager.Instance.CurrentLevel > 0) {
+                //MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
+                MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
+            }
         });
 
         MessageDispatcher.AddClickEvent(this, ContinueButton, () => {
@@ -36,6 +42,7 @@ public class LeaderboardWindow : UIWindow {
 
     private void OnEnable() {
         OnLeaderboardUpdated(null);
+        ContinueButton.gameObject.SetActive(GameManager.Instance.CurrentLevel > 0);
     }
 
     void OnLeaderboardUpdated(IMessage msg) {
