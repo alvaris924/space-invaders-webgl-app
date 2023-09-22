@@ -6,9 +6,15 @@ using UnityEngine.UI;
 
 public class MainWindow : UIWindow
 {
+    public Button LeaderboardButton;
     public Button StartGameButton;
 
+
     private void Awake() {
+
+        MessageDispatcher.AddClickEvent(this, LeaderboardButton, () => {
+            WindowManager.Instance.SetActiveWindow(UIWindowTypes.Leaderboard, true);
+        });
 
         MessageDispatcher.AddClickEvent(this, StartGameButton, () => {
             gameObject.SetActive(false);

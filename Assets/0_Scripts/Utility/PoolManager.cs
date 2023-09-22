@@ -22,10 +22,12 @@ public class PoolManager : Singleton<PoolManager> {
     }
 
     void OnPlayerWon(IMessage msg) {
+        DestroyAllPools();
         ClearPools();
     }
 
     void OnPlayerDefeated(IMessage msg) {
+        DestroyAllPools();
         ClearPools();
     }
 
@@ -68,5 +70,18 @@ public class PoolManager : Singleton<PoolManager> {
     [Button]
     public void ClearPools() {
         pools.Clear();
+    }
+
+    public void DestroyAllPools() {
+
+        for (int i = 0; i < pools.Count; i++) {
+
+            for (int j = pools[i].PooledGameObjects.Count - 1; j >= 0; j--) {
+                Destroy(pools[i].PooledGameObjects[j]);
+            }
+
+            pools[i].PooledGameObjects.Clear();
+        }
+
     }
 }
