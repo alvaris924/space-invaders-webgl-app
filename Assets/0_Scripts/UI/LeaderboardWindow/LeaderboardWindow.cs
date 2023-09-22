@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class LeaderboardWindow : UIWindow {
 
-    public TextMeshProUGUI CurrentScoreText;
-
     public List<LeaderboardItem> LeaderboardItems = new List<LeaderboardItem>();
+
+    public TextMeshProUGUI CurrentScoreText;
 
     public Button ReturnButton;
     public Button ContinueButton;
@@ -36,7 +36,7 @@ public class LeaderboardWindow : UIWindow {
         MessageDispatcher.AddClickEvent(this, ContinueButton, () => {
             WindowManager.Instance.SetActiveAllWindows(false);
             WindowManager.Instance.SetActiveWindow(UIWindowTypes.Game, true);
-            _ = GameManager.Instance.StartGame();
+            GameManager.Instance.StartGame();
         });
     }
 

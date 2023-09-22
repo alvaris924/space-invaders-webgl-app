@@ -14,11 +14,17 @@ public class GameManager : Singleton<GameManager> {
     [ReadOnly]
     public bool GamePaused;
 
-    public int CurrentPlayerLife = 3;
+    [SerializeField]
+    [ReadOnly] 
+    internal int CurrentPlayerLife = 3;
 
-    public int KillCount;
+    [SerializeField]
+    [ReadOnly]
+    private int KillCount;
 
-    public int CurrentLevel;
+    [SerializeField]
+    [ReadOnly]
+    internal int CurrentLevel;
 
     [ReadOnly]
     public GameSessionResultTypes SessionResultType;
@@ -88,10 +94,7 @@ public class GameManager : Singleton<GameManager> {
     /// <summary>
     /// prototype entire game loop here
     /// </summary>
-    public async UniTaskVoid StartGame() {
-
-        await UniTask.Delay(TimeSpan.FromSeconds(0f));
-
+    public void StartGame() {
         CurrentLevel++;
 
         MessageDispatcher.SendMessage(this, EventList.GameStarted, null, 0);

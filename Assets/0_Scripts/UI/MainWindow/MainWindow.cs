@@ -34,7 +34,7 @@ public class MainWindow : UIWindow
 
         MessageDispatcher.AddClickEvent(this, StartGameButton, () => {
             gameObject.SetActive(false);
-            _ = GameManager.Instance.StartGame();
+            GameManager.Instance.StartGame();
         });
 
         MessageDispatcher.AddClickEvent(this, NameChangeButton, () => {

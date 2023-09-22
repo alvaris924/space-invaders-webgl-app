@@ -13,12 +13,13 @@ public class EnemySpawner : Singleton<EnemySpawner> {
     public List<GameObject> EnemyPrefabs;
 
     public Vector2 GridSize = new Vector2(5, 3);
-    public float spacing = 2.0f;
-    public float startDelay = 2.0f;
+
+    public float Spacing = 2.0f;
+    public float StartDelay = 2.0f;
 
     public Vector2 SpawnOffset;
 
-    private Vector2 StartingSpawnOffset;
+    private Vector2 startingSpawnOffset;
 
     [ReadOnly]
     public List<Enemy> Enemies;
@@ -37,7 +38,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
         MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
 
-        StartingSpawnOffset = SpawnOffset;
+        startingSpawnOffset = SpawnOffset;
     }
 
     private void Start() {
@@ -51,7 +52,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
     void OnGameStarted(IMessage msg) {
         // spawn enemy first
         
-        SpawnOffset.y = Mathf.Max(StartingSpawnOffset.y - ((GameManager.Instance.CurrentLevel-1) * 1f), -2f);
+        SpawnOffset.y = Mathf.Max(startingSpawnOffset.y - ((GameManager.Instance.CurrentLevel-1) * 1f), -2f);
 
         Debug.Log(SpawnOffset.y);
 
@@ -67,7 +68,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
     }
 
     public void Reset() {
-        SpawnOffset.y = StartingSpawnOffset.y;
+        SpawnOffset.y = startingSpawnOffset.y;
     }
 
     [Button]
@@ -86,7 +87,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
                 int enemyPrefabIndex = GameLevelManager.Instance.Levels[gameLevelIndex].EnemyIndexByRows[y];
 
-                Vector3 spawnPosition = new Vector3((x + SpawnOffset.x) * spacing, (y + SpawnOffset.y) * spacing, 0);
+                Vector3 spawnPosition = new Vector3((x + SpawnOffset.x) * Spacing, (y + SpawnOffset.y) * Spacing, 0);
 
                 GameObject enemyObject = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[enemyPrefabIndex], spawnPosition, Quaternion.identity, SpawnParent);
 

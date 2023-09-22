@@ -8,23 +8,25 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour {
 
+    [Title("Movement")]
     public float moveSpeed = 5f;
 
-    public bool CanShoot;
+    [Title("Shooting")]
+    public float ProjectileSpeed;
 
     public float ShootCooldown = 0.5f;
 
+    [SerializeField]
+    protected bool CanShoot;
+
+    [Title("Reference")]
     public GameObject ProjectilePrefab;
 
     public Transform ShootPoint;
 
     public Rigidbody Rigidbody;
 
-    public float ProjectileSpeed;
-
     public AudioSource AudioSource;
-
-    public Vector2 EdgeOffset;
 
     public Renderer Renderer;
 

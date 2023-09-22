@@ -2,10 +2,8 @@ using com.ootii.Messages;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
@@ -13,9 +11,11 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     [Title("Movement")]
-    public bool CanMove = true;
+    [SerializeField]
+    protected bool CanMove = true;
 
-    public bool CanShoot = true;
+    [SerializeField]
+    protected bool CanShoot = true;
 
     //[ReadOnly]
     public float MoveSpeed = 2f;
@@ -26,14 +26,15 @@ public class Enemy : MonoBehaviour {
     //[ReadOnly]
     public float MoveDownSpeed = 2f;
 
-    [ReadOnly]
-    public Vector3 MoveDirection = Vector3.left;
-
     public float MoveDownMultplier = 1;
 
-    [InfoBox("Needs to be false initially for enemy to move")]
-    public bool CanMoveDown = true;
+    [ReadOnly]
+    [SerializeField]
+    private Vector3 MoveDirection = Vector3.left;
 
+    [InfoBox("Needs to be false initially for enemy to move")]
+    [SerializeField]
+    protected bool CanMoveDown = true;
 
     [Title("Attack")]
     public float ProjectileSpeed = 3;
@@ -44,7 +45,8 @@ public class Enemy : MonoBehaviour {
     public int ScorePoint = 100;
 
     [Title("Physics")]
-    public float RaycastDistance = 10.0f;
+    [SerializeField]
+    protected float RaycastDistance = 10.0f;
 
     [SerializeField]
     [ReadOnly]

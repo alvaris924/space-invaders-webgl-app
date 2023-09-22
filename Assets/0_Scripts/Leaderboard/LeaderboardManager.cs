@@ -38,8 +38,6 @@ public class LeaderboardManager : Singleton<LeaderboardManager> {
 
             Leaderboard loadedLeaderboard = JsonUtility.FromJson<Leaderboard>(leaderboardData);
 
-            //Debug.Log(loadedLeaderboard.LeaderboardDatas.Count);
-
             MainLeaderboard = loadedLeaderboard;
 
             MessageDispatcher.SendMessage(this, EventList.LeaderboardUpdated, null, 0);

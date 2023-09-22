@@ -10,6 +10,9 @@ public class WindowManager : Singleton<WindowManager> {
 
     public List<UIWindow> Windows;
 
+    public UIWindow GetWindowByType(UIWindowTypes windowType) {
+        return Windows.FirstOrDefault(uiWindow => uiWindow.WindowType == windowType);
+    }
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
@@ -40,10 +43,6 @@ public class WindowManager : Singleton<WindowManager> {
         //Debug.Log("OnPlayerWon");
         SetActiveWindow(UIWindowTypes.Game, false);
         SetActiveWindow(UIWindowTypes.Leaderboard, true);
-    }
-
-    public UIWindow GetWindowByType(UIWindowTypes windowType) {
-        return Windows.FirstOrDefault(uiWindow => uiWindow.WindowType == windowType);
     }
 
     [Button]

@@ -1,24 +1,24 @@
 using com.ootii.Messages;
-using System.Collections;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Saucer : MonoBehaviour
-{
-    public int ScorePoint;
+public class Saucer : MonoBehaviour {
 
-    private float screenWidth;
+    public int ScorePoint = 100;
+
+    [Title("Movement")]
     public float MoveSpeed = 3;
+    public float MoveCountdown = 5;
 
     [SerializeField][ReadOnly]
     private bool canMove = false;
-    public float MoveCountdown = 5;
-
+    
+    [Title("Renderer")]
     public Renderer Renderer;
 
-    private void Awake() {
+    private float screenWidth;
 
+    private void Awake() {
         Reset();
 
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
@@ -59,23 +59,19 @@ public class Saucer : MonoBehaviour
     public void Reset() {
         float distanceToCamera = transform.position.z - Camera.main.transform.position.z;
         screenWidth = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distanceToCamera)).x;
-        float newX = screenWidth * 2f;
-        transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+        float newPositionX = screenWidth * 2f;
+        transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
 
         MoveCountdown = 5;
         canMove = false;
     }
 
-
     private void Update() {
-
         Move();
-
     }
 
     [Button]
     private void Move() {
-
         if(!canMove) {
             return;
         }
@@ -85,8 +81,8 @@ public class Saucer : MonoBehaviour
 
         // If the GameObject goes beyond the left edge, reset its position to the right edge
         if (transform.position.x < -screenWidth) {
-            float newX = screenWidth * 2f;
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            float newPositionX = screenWidth * 2f;
+            transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
             canMove = false;
             MoveCountdown = 5;
         }

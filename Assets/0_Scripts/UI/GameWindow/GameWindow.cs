@@ -8,16 +8,14 @@ using UnityEngine.UI;
 public class GameWindow : UIWindow {
 
     public TextMeshProUGUI ScoreText;
-
-    public List<GameObject> LifeSprites;
-
-    public Button PauseButton;
-
     public TextMeshProUGUI StatusText;
+    public Button PauseButton;
+    public List<GameObject> LifeSprites;
 
     private void Awake() {
         MessageDispatcher.AddListener(this, EventList.ScoreUpdated, OnScoreUpdated);
         MessageDispatcher.AddListener(this, EventList.PlayerStatUpdated, OnPlayerStatUpdated);
+        MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
         MessageDispatcher.AddListener(this, EventList.GameEnded, OnGameEnded);
 
         MessageDispatcher.AddClickEvent(this, PauseButton, () => {
@@ -31,6 +29,10 @@ public class GameWindow : UIWindow {
 
     private void OnDestroy() {
         MessageDispatcher.RemoveAllListenersFromParent(this);
+    }
+
+    void OnGameStarted(IMessage msg) {
+        StatusText.text = "";
     }
 
     void OnGameEnded(IMessage msg) {

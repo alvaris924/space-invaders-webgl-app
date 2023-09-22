@@ -3,10 +3,10 @@ using System.Threading;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
-{
+public class Projectile : MonoBehaviour {
 
-    public OwnerTypes OwnerType;
+    [SerializeField]
+    internal OwnerTypes OwnerType;
 
     public Rigidbody Rigidbody;
 
@@ -16,11 +16,11 @@ public class Projectile : MonoBehaviour
     [ReadOnly]
     private Vector2 screenPos;
 
+    private CancellationTokenSource cancellationTokenSource;
+
     private void Start() {
         
     }
-
-    private CancellationTokenSource cancellationTokenSource;
 
     private void Update() {
 
@@ -52,7 +52,6 @@ public class Projectile : MonoBehaviour
         if (other.tag == "Enemy" && OwnerType == OwnerTypes.Player) {
             Reset();
         } else if (other.tag == "Player" && OwnerType == OwnerTypes.Enemy) {
-            Debug.Log("touched1");
             Reset();
         } else if (other.tag == "Projectile") {
             Reset();

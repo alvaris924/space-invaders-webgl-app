@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Sirenix.OdinInspector;
-using System.Collections;
 using UnityEngine;
 
 public class CameraShake : MonoBehaviour {
