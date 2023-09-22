@@ -22,4 +22,6 @@ public class EventList {
     public const string PlayerStatUpdated = "PlayerStatUpdated";
 
     public const string EnemySpeedUpdated = "EnemySpeedUpdated";
+
+    public const string LeaderboardUpdated = "LeaderboardUpdated";
 }

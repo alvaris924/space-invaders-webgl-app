@@ -26,6 +26,7 @@ public class Saucer : MonoBehaviour
     }
 
     private void Update() {
+
         // Move the GameObject to the left
         transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
 

@@ -8,6 +8,8 @@ using Sirenix.OdinInspector;
 
 public class GameManager : Singleton<GameManager> {
 
+    public string PlayerName;
+
     [ReadOnly]
     public bool GameStarted;
 
@@ -44,6 +46,9 @@ public class GameManager : Singleton<GameManager> {
 
     void OnEnemyDestroyed(IMessage msg) {
         KillCount++;
+        if(KillCount == EnemySpawner.Instance.Enemies.Count) {
+            MessageDispatcher.SendMessage(this, EventList.PlayerWon, null, 0);
+        }
     }
 
     void OnGameStarted(IMessage msg) {
@@ -62,6 +67,7 @@ public class GameManager : Singleton<GameManager> {
 
     void OnPlayerDefeated(IMessage msg) {
         GameStarted = false;
+        CurrentLevel = 0;
     }
 
     [Button]
@@ -91,5 +97,10 @@ public class GameManager : Singleton<GameManager> {
     [Button]
     public void WinGame() {
         MessageDispatcher.SendMessage(this, EventList.PlayerWon, null, 0);
+    }
+
+    [Button]
+    public void DeleteSaveData() {
+        PlayerPrefs.DeleteAll();
     }
 }
