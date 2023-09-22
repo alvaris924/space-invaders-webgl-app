@@ -58,6 +58,10 @@ public class EnemySpawner : Singleton<EnemySpawner> {
         DestroyAllEnemies();
     }
 
+    public void Reset() {
+        SpawnOffset.y = 1f;
+    }
+
     [Button]
     public void SpawnEnemies() {
 
@@ -84,9 +88,12 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
     [Button]
     public void DestroyAllEnemies() {
+
+        /*
         foreach (Enemy enemy in Enemies) {
             Destroy(enemy.gameObject);
         }
+        */
 
         // Clear the list to remove references to destroyed enemies
         Enemies.Clear();
