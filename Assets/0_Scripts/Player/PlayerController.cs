@@ -2,7 +2,9 @@ using com.ootii.Messages;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour {
 
@@ -20,6 +22,19 @@ public class PlayerController : MonoBehaviour {
 
     public AudioSource AudioSource;
 
+    public Vector2 EdgeOffset;
+
+    public Renderer Renderer;
+
+    private Vector2 screenBounds;
+    private float rendererWidth;
+
+    private void Awake() {
+        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+
+        rendererWidth = Renderer.bounds.size.x / 2;
+    }
+
     void Update() {
 
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -28,10 +43,26 @@ public class PlayerController : MonoBehaviour {
 
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
             Shoot();
         }
 
+    }
+
+    private void LateUpdate() {
+        LimitEdgeMovement();
+    }
+
+    public void Reset() {
+        Vector3 newPosition = transform.position;
+        newPosition.x = 0f;
+        transform.position = newPosition;
+    }
+
+    public void LimitEdgeMovement() {
+        Vector3 viewPosition = transform.position;
+        viewPosition.x = Mathf.Clamp(viewPosition.x, screenBounds.x + rendererWidth, screenBounds.x * -1 - rendererWidth);
+        transform.position = viewPosition;
     }
 
     [Button]
@@ -66,8 +97,13 @@ public class PlayerController : MonoBehaviour {
         }
 
         if(other.tag == "Enemy") {
-            MessageDispatcher.SendMessage(this, EventList.PlayerAttacked, null, 0);
+            Debug.Log("touched");
+            // based on this video (https://www.youtube.com/watch?v=kR2fjwr-TzA), player will be directly defeated
+            GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation);
+            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
+            MessageDispatcher.SendMessage(this, EventList.GameEnded, null, 1);
         }
+
     }
 
 }
