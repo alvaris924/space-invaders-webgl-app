@@ -13,7 +13,7 @@ Since the game has to be completed in a short period, Singleton pattern is used 
 
 Though, Observer pattern is used with improved custom MessageDispatcher plugin to greatly improve decoupling, so the game can be scaled with minimal effort.
 
-The codebase also demonstrated the uses of LINQ, UniRX, Exception Handling to showcase the understanding of advanced coding knowledge.
+The codebase also demonstrated the uses of LINQ, UniRX, Exception Handling, etc, to showcase the understanding of advanced coding knowledge.
 
 All enemies, projectiles, and explosion effects are pooled with a simple PoolManager.
 
