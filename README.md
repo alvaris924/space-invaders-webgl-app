@@ -24,11 +24,11 @@ Project Highlights:
 1. Game is made in 72 hours
 2. Game has 4 enemy types
 3. Game UIs are considerably polished
-4. Game has a leaderboard that shows player ranking, and can be loaded upon game restart
-5. All game logics are self-created
+4. Game has a leaderboard that shows player ranking, and the leaderboard data can be loaded upon game restart
+5. All game logics are UIs are self-created
 6. Singleton pattern is applied for quick prototyping
 7. Observer pattern is applied for better decoupling and modularity
 8. All enemies, projectiles, and explosion effects are pooled with a simple PoolManager
 9. Managers, such as WindowManager, is created to manage child entity such as UIWindow
-10. Custom Hologram shader is used
+10. Custom Hologram shader (from asset store) is used
 
