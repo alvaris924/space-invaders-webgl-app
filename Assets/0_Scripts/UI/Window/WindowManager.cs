@@ -14,6 +14,7 @@ public class WindowManager : Singleton<WindowManager> {
         return Windows.FirstOrDefault(uiWindow => uiWindow.WindowType == windowType);
     }
     private void Awake() {
+        MessageDispatcher.AddListener(this, EventList.GameCountdown, OnGameCountdown);
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
         MessageDispatcher.AddListener(this, EventList.PlayerWon, OnPlayerWon);
@@ -28,9 +29,14 @@ public class WindowManager : Singleton<WindowManager> {
         MessageDispatcher.RemoveAllListenersFromParent(this);
     }
 
-    void OnGameStarted(IMessage msg) {
+    void OnGameCountdown(IMessage msg) {
         SetActiveWindow(UIWindowTypes.Game, true);
         SetActiveWindow(UIWindowTypes.Main, false);
+        GetWindowByType(UIWindowTypes.Game).GetComponent<GameWindow>().CountStartGame();
+    }
+
+    void OnGameStarted(IMessage msg) {
+
     }
 
     void OnPlayerDefeated(IMessage msg) {

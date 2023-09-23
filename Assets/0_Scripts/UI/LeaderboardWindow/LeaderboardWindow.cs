@@ -25,18 +25,18 @@ public class LeaderboardWindow : UIWindow {
         OnLeaderboardUpdated(null);
 
         MessageDispatcher.AddClickEvent(this, ReturnButton, () => {
+            if(GameManager.Instance.CurrentLevel > 0) {
+                MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 0);
+                MessageDispatcher.SendMessage(this, EventList.GameEnded, "", 0);
+            }
             WindowManager.Instance.SetActiveAllWindows(false);
             WindowManager.Instance.SetActiveWindow(UIWindowTypes.Main, true);
-            if(GameManager.Instance.CurrentLevel > 0) {
-                //MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
-                MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
-            }
         });
 
         MessageDispatcher.AddClickEvent(this, ContinueButton, () => {
+            GameManager.Instance.StartGame();
             WindowManager.Instance.SetActiveAllWindows(false);
             WindowManager.Instance.SetActiveWindow(UIWindowTypes.Game, true);
-            GameManager.Instance.StartGame();
         });
     }
 

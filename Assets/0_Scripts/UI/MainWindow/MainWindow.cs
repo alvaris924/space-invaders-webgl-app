@@ -6,8 +6,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainWindow : UIWindow
-{
+public class MainWindow : UIWindow {
+
     public Button LeaderboardButton;
     public Button StartGameButton;
 
@@ -60,4 +60,6 @@ public class MainWindow : UIWindow
     private void OnDestroy() {
         MessageDispatcher.RemoveAllListenersFromParent(this);
     }
+
+
 }

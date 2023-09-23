@@ -33,6 +33,7 @@ public class GameManager : Singleton<GameManager> {
         Application.targetFrameRate = 60;
         
         MessageDispatcher.AddListener(this, EventList.GameStarted, OnGameStarted);
+        MessageDispatcher.AddListener(this, EventList.GameEnded, OnGameEnded);
         MessageDispatcher.AddListener(this, EventList.PlayerAttacked, OnPlayerAttacked);
         MessageDispatcher.AddListener(this, EventList.PlayerDefeated, OnPlayerDefeated);
         MessageDispatcher.AddListener(this, EventList.EnemyDestroyed, OnEnemyDestroyed);
@@ -65,6 +66,10 @@ public class GameManager : Singleton<GameManager> {
         GameStarted = true;
     }
 
+    void OnGameEnded(IMessage msg) {
+
+    }
+
     void OnPlayerAttacked(IMessage msg) {
         CurrentPlayerLife--;
         MessageDispatcher.SendMessage(this, EventList.PlayerStatUpdated, null, 0);
@@ -95,9 +100,10 @@ public class GameManager : Singleton<GameManager> {
     /// prototype entire game loop here
     /// </summary>
     public void StartGame() {
+
         CurrentLevel++;
 
-        MessageDispatcher.SendMessage(this, EventList.GameStarted, null, 0);
+        MessageDispatcher.SendMessage(this, EventList.GameCountdown, null, 0);
 
     }
 

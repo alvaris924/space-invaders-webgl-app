@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EventList {
 
+    public const string GameCountdown = "GameCountdown";
+
     public const string GameStarted = "GameStarted";
 
     public const string GameEnded = "GameEnded";
