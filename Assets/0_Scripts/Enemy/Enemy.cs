@@ -116,18 +116,25 @@ public class Enemy : MonoBehaviour {
             return;
         }
 
-        transform.Translate(MoveDirection * MoveSpeed * MoveSpeedMultiplier * Time.deltaTime);
-
         if ((screenPos.x <= (0 + FieldManager.Instance.EdgeOffset.x) && MoveDirection == Vector3.left) ||
             (screenPos.x >= (Screen.width + FieldManager.Instance.EdgeOffset.y) && MoveDirection == Vector3.right)
         ) {
-            if(CanMove) {
-                if(!CanMoveDown) {
+            if (CanMove) {
+                if (!CanMoveDown) {
                     MessageDispatcher.SendMessage(this, EventList.TouchScreenEdge, null, 0);
                 }
             }
+        } else {
+            transform.Translate(MoveDirection * MoveSpeed * MoveSpeedMultiplier * Time.deltaTime);
         }
 
+        if(screenPos.y <= 0) {
+            if (GameManager.Instance.GameStarted) {
+                CanMove = false;
+                MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
+                MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
+            }
+        }
     }
 
     [Button]
@@ -213,7 +220,7 @@ public class Enemy : MonoBehaviour {
             return;
         }
 
-        GameObject projectileObject = PoolManager.Instance.SpawnGameObject(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation);
+        GameObject projectileObject = PoolManager.Instance.SpawnGameObject(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation, FieldManager.Instance.ProjectilesParent.transform);
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
 
@@ -244,7 +251,7 @@ public class Enemy : MonoBehaviour {
 
         if (projectile != null) {
             if(projectile.OwnerType == OwnerTypes.Player) {
-                GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation);
+                GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation, FieldManager.Instance.ExplosionEffects_Parent.transform);
                 //AudioSource.clip = AudioManager.Instance.ExplosionClip;
                 //AudioSource.Play();
                 Reset();

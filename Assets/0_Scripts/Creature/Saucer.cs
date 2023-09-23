@@ -43,6 +43,10 @@ public class Saucer : MonoBehaviour {
         });
     }
 
+    private void Update() {
+        Move();
+    }
+
     void OnGameStarted(IMessage msg) {
         Reset();
     }
@@ -64,10 +68,6 @@ public class Saucer : MonoBehaviour {
 
         MoveCountdown = 5;
         canMove = false;
-    }
-
-    private void Update() {
-        Move();
     }
 
     [Button]
@@ -94,7 +94,7 @@ public class Saucer : MonoBehaviour {
 
         if (projectile != null) {
             if (projectile.OwnerType == OwnerTypes.Player) {
-                GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation);
+                GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation, FieldManager.Instance.ExplosionEffects_Parent.transform);
                 Reset();
                 MessageDispatcher.SendMessage(this, EventList.SaucerDestroyed, ScorePoint, 0);
             }
