@@ -51,3 +51,6 @@ Used 2D Assets:
 
 Used Custom Shaders:
 1. Sci-Fi Hologram Shader
+
+License: Attribution-NonCommercial-NoDerivatives 4.0 International
+
