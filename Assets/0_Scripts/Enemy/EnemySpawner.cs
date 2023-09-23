@@ -15,7 +15,6 @@ public class EnemySpawner : Singleton<EnemySpawner> {
     public Vector2 GridSize = new Vector2(5, 3);
 
     public float Spacing = 2.0f;
-    public float StartDelay = 2.0f;
 
     public Vector2 SpawnOffset;
 
@@ -23,8 +22,6 @@ public class EnemySpawner : Singleton<EnemySpawner> {
 
     [ReadOnly]
     public List<Enemy> Enemies;
-
-    public Transform SpawnParent;
 
     public List<Enemy> GetAliveEnemies() {
         return Enemies.Where(enemy => !enemy.PoolEntity.IsAvailable).ToList();
@@ -52,9 +49,7 @@ public class EnemySpawner : Singleton<EnemySpawner> {
     void OnGameStarted(IMessage msg) {
         // spawn enemy first
         
-        SpawnOffset.y = Mathf.Max(startingSpawnOffset.y - ((GameManager.Instance.CurrentLevel-1) * 1f), -2f);
-
-        Debug.Log(SpawnOffset.y);
+        SpawnOffset.y = Mathf.Max(startingSpawnOffset.y - ((GameManager.Instance.CurrentLevel-1) * 1f), -1f);
 
         SpawnEnemies();
     }
@@ -81,15 +76,17 @@ public class EnemySpawner : Singleton<EnemySpawner> {
             gameLevelIndex = 0;
         }
 
+        int totalEnemyRows = GameLevelManager.Instance.Levels[gameLevelIndex].EnemyIndexByRows.Count;
+
         for (int x = 0; x < GridSize.x; x++) {
 
             for (int y = 0; y < GridSize.y; y++) {
 
-                int enemyPrefabIndex = GameLevelManager.Instance.Levels[gameLevelIndex].EnemyIndexByRows[y];
+                int enemyPrefabIndex = GameLevelManager.Instance.Levels[gameLevelIndex].EnemyIndexByRows[(totalEnemyRows-1) - y];
 
                 Vector3 spawnPosition = new Vector3((x + SpawnOffset.x) * Spacing, (y + SpawnOffset.y) * Spacing, 0);
 
-                GameObject enemyObject = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[enemyPrefabIndex], spawnPosition, Quaternion.identity, SpawnParent);
+                GameObject enemyObject = PoolManager.Instance.SpawnGameObject(EnemyPrefabs[enemyPrefabIndex], spawnPosition, Quaternion.identity, FieldManager.Instance.Enemies_Parent.transform);
 
                 Enemy enemy = enemyObject.GetComponent<Enemy>();
 

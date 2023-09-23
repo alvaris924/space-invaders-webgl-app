@@ -8,6 +8,10 @@ public class FieldManager : Singleton<FieldManager> {
 
     public Player Player;
 
+    public GameObject ProjectilesParent;
+    public GameObject ExplosionEffects_Parent;
+    public GameObject Enemies_Parent;
+
     public Vector2 EdgeOffset = Vector2.zero;
 
     public float EnemyStartMoveSpeedMultiplier = 0.1f;

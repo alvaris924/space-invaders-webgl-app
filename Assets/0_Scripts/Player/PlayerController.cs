@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour {
         }
         CanShoot = false;
 
-        GameObject projectileObject = PoolManager.Instance.SpawnGameObject(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation);
+        GameObject projectileObject = PoolManager.Instance.SpawnGameObject(ProjectilePrefab, ShootPoint.position, ShootPoint.rotation, FieldManager.Instance.ProjectilesParent.transform);
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
 
@@ -119,11 +119,11 @@ public class PlayerController : MonoBehaviour {
         }
 
         if(other.tag == "Enemy") {
-            Debug.Log("touched");
             // based on this video (https://www.youtube.com/watch?v=kR2fjwr-TzA), player will be directly defeated
-            GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation);
-            MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
-            MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
+            GameObject explosionObject = PoolManager.Instance.SpawnGameObject(VFXManager.Instance.ExplosionEffectPrefab, transform.position, transform.rotation, FieldManager.Instance.ExplosionEffects_Parent.transform);
+            //MessageDispatcher.SendMessage(this, EventList.PlayerDefeated, null, 1);
+            //MessageDispatcher.SendMessage(this, EventList.GameEnded, "Lose", 0);
+            MessageDispatcher.SendMessage(this, EventList.PlayerAttacked, null, 0);
         }
 
     }
