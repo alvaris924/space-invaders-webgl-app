@@ -14,7 +14,7 @@ public class UserManager : Singleton<UserManager> {
 
     private void Start() {
         LoadUserName();
-        Username = WindowManager.Instance.Windows[(int)UIWindowTypes.Main].GetComponent<MainWindow>().PlayerNameText.text;
+        //Username = WindowManager.Instance.Windows[(int)UIWindowTypes.Main].GetComponent<MainWindow>().PlayerNameText.text;
     }
 
     public void SaveUserName() {
@@ -24,6 +24,9 @@ public class UserManager : Singleton<UserManager> {
     [Button]
     public void LoadUserName() {
         Username = PlayerPrefs.GetString("Username");
+        if (string.IsNullOrEmpty(Username)) {
+            Username = "AmazingPlayer";
+        }
         MessageDispatcher.SendMessage(this, EventList.UserStatUpdated, null, 0);
     }
 }

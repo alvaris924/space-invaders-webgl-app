@@ -212,8 +212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScorePoint: 500
   MoveSpeed: 3
+  MoveCountdown: 8
   canMove: 0
-  MoveCountdown: 5
   Renderer: {fileID: 8341829608741281414}
 --- !u!1 &8341829608727679878
 GameObject:
