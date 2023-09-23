@@ -32,3 +32,22 @@ Project Highlights:
 9. Managers, such as WindowManager, is created to manage child entity such as UIWindow
 10. Custom Hologram shader (from asset store) is used
 
+Used Plugins:
+1. DoTweenPro
+2. Odin Inspector
+3. Editor Console Pro
+4. Build Report Tool
+5. UniRX
+6. UniTask
+
+Used 3D Assets:
+1. Low Poly Space Invader Set
+2. Spaceship Collection Pack
+3. 3D Fire and Explosions
+4. Low-Poly UFO
+
+Used 2D Assets:
+1. GUI PRO Kit - Sci-Fi
+
+Used Custom Shaders:
+1. Sci-Fi Hologram Shader
