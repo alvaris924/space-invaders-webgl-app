@@ -34,6 +34,7 @@ public class GameWindow : UIWindow {
         ScoreText.text = "0";
         StatusText.text = "";
         LevelText.text = "LEVEL 1";
+        PauseButton.gameObject.SetActive(false);
     }
 
     private void OnEnable() {
@@ -46,6 +47,7 @@ public class GameWindow : UIWindow {
         }
         LevelText.text = $"LEVEL: {GameManager.Instance.CurrentLevel}";
         SetLife(3);
+        PauseButton.gameObject.SetActive(false);
     }
 
     private void OnDestroy() {
@@ -54,7 +56,7 @@ public class GameWindow : UIWindow {
 
     void OnGameStarted(IMessage msg) {
         StatusText.text = "";
-
+        PauseButton.gameObject.SetActive(true);
     }
 
     void OnGameEnded(IMessage msg) {
